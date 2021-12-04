@@ -1,3 +1,5 @@
+import copy
+
 input_filename = 'input.txt'
 board_size = 5
 
@@ -57,7 +59,7 @@ def score_board(board, drawn_nums):
         for col in row:
             if col not in drawn_nums:
                 sum += col
-                print(sum)
+                # print(sum)
     final_num = drawn_nums[-1]
     return sum*final_num
 
@@ -87,4 +89,39 @@ for draw in number_draws:
         break
 
 # print(winning_board)
-print(winning_score)
+# print(winning_score)
+
+
+last_board = None
+
+next_boards = copy.deepcopy(boards)
+remaining_boards = next_boards
+
+drawn_nums = []
+for draw in number_draws:
+    # print('Next num: '+ str(draw))
+    drawn_nums.append(draw)
+    if(len(drawn_nums) >= board_size):
+        for i, board in enumerate(remaining_boards):
+            if(check_solved(board, drawn_nums)):
+                last_board = next_boards.pop(i)
+                if len(remaining_boards) == 1:
+                    # print(drawn_nums)
+                    # print(last_board)
+                    break
+            else:
+                transposed_board = transpose_board(board)
+                if(check_solved(transposed_board, drawn_nums)):
+                    last_board = next_boards.pop(i)
+                    if len(remaining_boards) == 1:
+                        # print(drawn_nums)
+                        # print(last_board)
+                        break
+    if len(next_boards) == 0:
+        break
+    next_boards = copy.deepcopy(remaining_boards)
+    remaining_boards = next_boards
+
+    
+
+print(score_board(last_board, drawn_nums))
