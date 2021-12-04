@@ -13,26 +13,17 @@ boards = []
 # Part 1
 with open(input_filename) as input_file:
     for i, line in enumerate(input_file):
-        # print('Line ' + str(i) +': '+ line.strip())
         if i == 0:
-            # print('First row, getting draws')
             number_draws = [int(n) for n in line.split(',')]
         elif line.strip() == '':
-            # print('Empty line')
             pass
         else:
             if next_row_num == 0:
-                # print(boards)
-                # print('Starting a new board')
                 boards.append([])
                 next_board_num += 1
-                # print(boards)
-            # print('Add line to current board and advance row num')
             boards[next_board_num].append([int(n) for n in line.split()])
-            # print(boards)
             next_row_num += 1
             if next_row_num == board_size:
-                # print('Reached end of last board, reset row count')
                 next_row_num = 0
 
 def transpose_board(board):
@@ -59,13 +50,10 @@ def score_board(board, drawn_nums):
         for col in row:
             if col not in drawn_nums:
                 sum += col
-                # print(sum)
     final_num = drawn_nums[-1]
     return sum*final_num
 
 
-# print(number_draws)
-# print(boards)
 
 winning_score = None
 winning_board = None
@@ -88,8 +76,7 @@ for draw in number_draws:
     if winning_board:
         break
 
-# print(winning_board)
-# print(winning_score)
+print(winning_score)
 
 
 last_board = None
@@ -99,23 +86,18 @@ remaining_boards = next_boards
 
 drawn_nums = []
 for draw in number_draws:
-    # print('Next num: '+ str(draw))
     drawn_nums.append(draw)
     if(len(drawn_nums) >= board_size):
         for i, board in enumerate(remaining_boards):
             if(check_solved(board, drawn_nums)):
                 last_board = next_boards.pop(i)
                 if len(remaining_boards) == 1:
-                    # print(drawn_nums)
-                    # print(last_board)
                     break
             else:
                 transposed_board = transpose_board(board)
                 if(check_solved(transposed_board, drawn_nums)):
                     last_board = next_boards.pop(i)
                     if len(remaining_boards) == 1:
-                        # print(drawn_nums)
-                        # print(last_board)
                         break
     if len(next_boards) == 0:
         break
