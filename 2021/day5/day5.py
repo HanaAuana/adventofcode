@@ -38,28 +38,20 @@ class Line:
 
         if self.is_straight_line():
             if start_x > stop_x:
-                print('swapping points')
                 start_x, stop_x, = stop_x, start_x
             if start_y > stop_y:
                 start_y, stop_y = stop_y, start_y
             
             slope = 1
-            print(f'{start_x},{start_y} to {stop_x},{stop_y}')
             for x in range(start_x, stop_x + 1):
                 for y in range(start_y, stop_y + 1):
                     points.append(Point(x, y))
-            print(points)
         else:
-            print('finding for diagonal line')
-            print(start_x)
-            print(stop_x)
             if start_x > stop_x:
-                print('swapping points')
                 start_x, stop_x, = stop_x, start_x
                 start_y, stop_y = stop_y, start_y
             
             slope = (stop_y - start_y) // (stop_x - start_x)
-            print(f'{start_x},{start_y} to {stop_x},{stop_y}')
             for x, y in zip(range(start_x, stop_x), range(start_y, stop_y, slope)):
                 points.append(Point(x, y))
             points.append(Point(stop_x, stop_y))
@@ -123,7 +115,6 @@ with open(input_filename) as input_file:
             
 
 board = Board(straight_lines, max_pos)
-print(board)
 print(board.get_num_overlaps(2))
 
 
@@ -136,10 +127,5 @@ with open(input_filename) as input_file:
         if created_line.max_pos > max_pos:
             max_pos = created_line.max_pos
 
-# for line in all_lines:
-    # print(line)
-    # print(line.get_all_points())
-
 full_board = Board(all_lines, max_pos)
-print(full_board)
 print(full_board.get_num_overlaps(2))
