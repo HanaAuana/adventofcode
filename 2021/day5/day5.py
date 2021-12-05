@@ -15,11 +15,11 @@ class Line:
         self.point_a = point_a
         self.point_b = point_b
         
-        self.x_origin = min(self.point_a.x, self.point_b.x)
-        self.x_end = max(self.point_a.x, self.point_b.x)
+        self.x_origin = self.point_a.x
+        self.x_end = self.point_b.x
 
-        self.y_origin = min(self.point_a.y, self.point_b.y)
-        self.y_end = max(self.point_a.y, self.point_b.y)
+        self.y_origin = self.point_a.y
+        self.y_end = self.point_b.y
 
         self.max_pos = max(self.x_origin, self.x_end, self.y_origin, self.y_end)
     
@@ -29,10 +29,41 @@ class Line:
     
     def get_all_points(self):
         points = []
-        
-        for x in range(self.x_origin, self.x_end+1):
-            for y in range(self.y_origin, self.y_end+1):
+
+        start_x = self.x_origin
+        stop_x = self.x_end
+
+        start_y = self.y_origin
+        stop_y = self.y_end
+
+        if self.is_straight_line():
+            if start_x > stop_x:
+                print('swapping points')
+                start_x, stop_x, = stop_x, start_x
+            if start_y > stop_y:
+                start_y, stop_y = stop_y, start_y
+            
+            slope = 1
+            print(f'{start_x},{start_y} to {stop_x},{stop_y}')
+            for x in range(start_x, stop_x + 1):
+                for y in range(start_y, stop_y + 1):
+                    points.append(Point(x, y))
+            print(points)
+        else:
+            print('finding for diagonal line')
+            print(start_x)
+            print(stop_x)
+            if start_x > stop_x:
+                print('swapping points')
+                start_x, stop_x, = stop_x, start_x
+                start_y, stop_y = stop_y, start_y
+            
+            slope = (stop_y - start_y) // (stop_x - start_x)
+            print(f'{start_x},{start_y} to {stop_x},{stop_y}')
+            for x, y in zip(range(start_x, stop_x), range(start_y, stop_y, slope)):
                 points.append(Point(x, y))
+            points.append(Point(stop_x, stop_y))
+
         return points
     
     def is_straight_line(self):
@@ -92,6 +123,23 @@ with open(input_filename) as input_file:
             
 
 board = Board(straight_lines, max_pos)
+print(board)
 print(board.get_num_overlaps(2))
 
 
+all_lines = []
+max_pos = 0
+with open(input_filename) as input_file:
+    for line in input_file:
+        created_line = get_line_from_text(line)
+        all_lines.append(created_line)
+        if created_line.max_pos > max_pos:
+            max_pos = created_line.max_pos
+
+# for line in all_lines:
+    # print(line)
+    # print(line.get_all_points())
+
+full_board = Board(all_lines, max_pos)
+print(full_board)
+print(full_board.get_num_overlaps(2))
