@@ -41,7 +41,6 @@ for signals, output in lines:
         clear_signal = signal.strip()
         sorted_signal = ''.join(sorted(clear_signal))
         if len(clear_signal) == 2:
-                # print(f'1 is {sorted_signal}')
                 keys[1] = sorted_signal
                 continue
         elif len(clear_signal) == 3:
@@ -63,7 +62,6 @@ for signals, output in lines:
                 else:
                     keys[2] = sorted_signal
         elif len(clear_signal) == 6:
-            # print(clear_signal)
             if set(keys[1]) <= set(clear_signal):
                 if set(keys[4]) <= set(clear_signal):
                     keys[9] = sorted_signal
@@ -71,7 +69,6 @@ for signals, output in lines:
                     keys[0] = sorted_signal
             else:
                 keys[6] = sorted_signal
-    # print(keys)
 
 
     sorted_outputs = [''.join(sorted(o)) for o in output.split()]
@@ -80,7 +77,6 @@ for signals, output in lines:
         for i,key in enumerate(keys):
             if value == key:
                 display += str(i)
-    print(display)
     total += int(display)
         
 print(total)
